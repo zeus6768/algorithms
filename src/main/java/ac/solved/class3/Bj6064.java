@@ -7,67 +7,67 @@ import java.util.StringTokenizer;
 
 public class Bj6064 {
 
-    int t;
-    int m;
-    int n;
-    int x;
-    int y;
+    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-    StringBuilder answer;
+    int m, n, x, y;
 
-    public static void main(String[] args) throws IOException {
+    StringBuilder answer = new StringBuilder();
+
+    public static void main(String[] args) {
         new Bj6064().run();
     }
 
-    void run() throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st;
-        answer = new StringBuilder();
-
-        t = Integer.parseInt(br.readLine());
-        while(t-- > 0) {
-            st = new StringTokenizer(br.readLine());
-            init(st);
-            solve();
+    void run() {
+        int t = Integer.parseInt(input());
+        while (t-- > 0) {
+            init();
+            int year = solve();
+            answer.append(year).append('\n');
         }
-
         System.out.print(answer);
     }
 
-    void init(StringTokenizer st) {
+    void init() {
+        StringTokenizer st = new StringTokenizer(input());
         m = Integer.parseInt(st.nextToken());
         n = Integer.parseInt(st.nextToken());
         x = Integer.parseInt(st.nextToken());
         y = Integer.parseInt(st.nextToken());
     }
 
-    void solve() {
+    int solve() {
+        int max = lcm(m, n);
         int year = x;
-        int ny = (x % n == 0) ? n : x % n;
-        int lcm = lcm(m, n);
-        while (year <= lcm) {
+        int ny = x % n == 0 ? n : x % n;
+        while (year <= max) {
             if (ny == y) {
-                answer.append(year).append('\n');
-                return;
+                return year;
             }
             ny += m;
-            ny = (ny % n == 0) ? n : ny % n;
+            ny = ny % n == 0 ? n : ny % n;
             year += m;
         }
-        answer.append(-1).append('\n');
+        return -1;
     }
 
-    int gcd(int x, int y) {
+    int lcm(int a, int b) {
+        return a * b / gcd(a, b);
+    }
+
+    int gcd(int a, int b) {
         int tmp;
-        while (y != 0) {
-            tmp = x;
-            x = y;
-            y = tmp % y;
+        while (b != 0) {
+            tmp = a;
+            a = b;
+            b = tmp % a;
         }
-        return x;
+        return a;
     }
 
-    int lcm(int x, int y) {
-        return x * y / gcd(x, y);
+    String input() {
+        try {
+            return br.readLine();
+        } catch (IOException ignored) {}
+        return null;
     }
 }
