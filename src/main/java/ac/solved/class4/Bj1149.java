@@ -1,4 +1,4 @@
-package ac.solved.class3;
+package ac.solved.class4;
 
 import java.io.BufferedReader;
 import java.io.IOException;

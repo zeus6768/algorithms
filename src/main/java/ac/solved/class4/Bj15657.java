@@ -1,27 +1,31 @@
-package ac.solved.class3;
+package ac.solved.class4;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
 import java.util.StringTokenizer;
 
-public class Bj15652 {
+public class Bj15657 {
 
     static final BufferedReader READER = new BufferedReader(new InputStreamReader(System.in));
 
     int n;
     int m;
 
-    Stack<Integer> numbers;
+    List<Integer> numbers;
+
+    Stack<Integer> stack;
 
     StringBuilder answer;
 
     public static void main(String[] args) {
-        Bj15652 main = new Bj15652();
+        Bj15657 main = new Bj15657();
         main.init();
-        main.solve(1);
+        main.solve(0);
         main.printAnswer();
     }
 
@@ -29,25 +33,32 @@ public class Bj15652 {
         StringTokenizer tokenizer = new StringTokenizer(input());
         n = Integer.parseInt(tokenizer.nextToken());
         m = Integer.parseInt(tokenizer.nextToken());
-        numbers = new Stack<>();
+        numbers = new ArrayList<>();
+        tokenizer = new StringTokenizer(input());
+        while (tokenizer.hasMoreTokens()) {
+            int number = Integer.parseInt(tokenizer.nextToken());
+            numbers.add(number);
+        }
+        Collections.sort(numbers);
+        stack = new Stack<>();
         answer = new StringBuilder();
     }
 
-    void solve(int start) {
-        if (numbers.size() == m) {
-            append(numbers);
+    void solve(int index) {
+        if (stack.size() == m) {
+            append();
             return;
         }
-        for (int i = start; i <= n; i++) {
-            numbers.add(i);
+        for (int i = index; i < numbers.size(); i++) {
+            stack.add(numbers.get(i));
             solve(i);
-            numbers.pop();
+            stack.pop();
         }
     }
 
-    void append(List<Integer> numbers) {
-        for (int j : numbers) {
-            answer.append(j).append(' ');
+    void append() {
+        for (int i : stack) {
+            answer.append(i).append(' ');
         }
         answer.replace(answer.length()-1, answer.length(), "\n");
     }

@@ -1,17 +1,19 @@
-package ac.solved.class3;
+package ac.solved.class4;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.Stack;
 import java.util.StringTokenizer;
 
-public class Bj15654 {
+public class Bj15663 {
 
-    static final BufferedReader READER = new BufferedReader(new InputStreamReader(System.in));
+    BufferedReader READER = new BufferedReader(new InputStreamReader(System.in));
 
     int n;
     int m;
@@ -20,54 +22,80 @@ public class Bj15654 {
 
     Stack<Integer> stack;
 
+    Set<List<Integer>> permutations;
+
     StringBuilder answer;
 
     public static void main(String[] args) {
-        Bj15654 main = new Bj15654();
+        Bj15663 main = new Bj15663();
         main.init();
         main.solve();
-        main.printAnswer();
     }
 
     void init() {
+        initInput();
+        initCollections();
+    }
+
+    void initInput() {
         StringTokenizer tokenizer = new StringTokenizer(input());
         n = Integer.parseInt(tokenizer.nextToken());
         m = Integer.parseInt(tokenizer.nextToken());
         numbers = new ArrayList<>();
         tokenizer = new StringTokenizer(input());
-        while (tokenizer.hasMoreTokens()) {
+        for (int i = 0; i < n; i++) {
             int number = Integer.parseInt(tokenizer.nextToken());
             numbers.add(number);
         }
+    }
+
+    void initCollections() {
         Collections.sort(numbers);
         stack = new Stack<>();
+        permutations = new LinkedHashSet<>();
         answer = new StringBuilder();
     }
 
     void solve() {
+        search();
+        printAnswer();
+    }
+
+    void search() {
         if (stack.size() == m) {
-            append();
+            addPermutation();
             return;
         }
-        for (int number : numbers) {
-            if (stack.contains(number)) continue;
-            stack.add(number);
-            solve();
-            stack.pop();
+        for (int i = 0; i < n; i++) {
+            if (!stack.contains(i)) {
+                stack.add(i);
+                search();
+                stack.pop();
+            }
         }
     }
 
-    void append() {
-        for (int i : stack) {
-            answer.append(i).append(' ');
+    void addPermutation() {
+        List<Integer> nums = new ArrayList<>();
+        for (int index : stack) {
+            nums.add(numbers.get(index));
         }
-        answer.replace(answer.length()-1, answer.length(), "\n");
+        permutations.add(nums);
     }
 
     void printAnswer() {
+        for (List<Integer> permutation : permutations) {
+            appendAnswer(permutation);
+        }
         System.out.print(answer);
     }
 
+    void appendAnswer(List<Integer> permutation) {
+        for (int number : permutation) {
+            answer.append(number).append(' ');
+        }
+        answer.replace(answer.length()-1, answer.length(), "\n");
+    }
 
     String input() {
         try {
