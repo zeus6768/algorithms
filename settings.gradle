@@ -1,4 +1,2 @@
 rootProject.name = 'algorithms'
-include 'src:main:test'
-findProject(':src:main:test')?.name = 'test'
-
+include 'programmers'
