@@ -1,2 +1,3 @@
 rootProject.name = 'algorithms'
 include 'programmers'
+include 'solved.ac'
